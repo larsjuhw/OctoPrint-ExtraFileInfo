@@ -9,8 +9,6 @@ class ExtraFileInfoPlugin(
     octoprint.plugin.TemplatePlugin):
 
     def get_assets(self):
-        # Define your plugin's asset files to automatically include in the
-        # core UI here.
         return {
             "js": ["js/extrafileinfo.js"],
         }
@@ -26,7 +24,7 @@ class ExtraFileInfoPlugin(
                 # version check: github repository
                 "type": "github_release",
                 "user": "larsjuhw",
-                "repo": "OctoPrint-Extrafileinfo",
+                "repo": "OctoPrint-ExtraFileInfo",
                 "current": self._plugin_version,
 
                 # update method: pip

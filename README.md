@@ -7,7 +7,7 @@ This plugin is still WIP, but I have not encountered any issues.
 
 ## Configuration
 
-I have not yet added a settings menu as I do not know how to. The settings you want to show are currently defined in [extrafileinfo.js](octoprint_extrafileinfo/static/js/extrafileinfo.js) as such:
+I have not yet added a settings menu as I do not know how to. Feel free to make a PR that adds a settings menu. The settings you want to show are currently defined in [extrafileinfo.js](octoprint_extrafileinfo/static/js/extrafileinfo.js) as such:
 
 ```javascript
 // Defined as [[key0, key1, ...], [unit1, unit2, ...]]
@@ -23,4 +23,4 @@ or manually using this URL:
 
     https://github.com/larsjuhw/OctoPrint-Extrafileinfo/archive/master.zip
 
-Requires [Octoprint-SlicerSettingsParser](https://github.com/tjjfvi/OctoPrint-SlicerSettingsParser) or [Octoprint-SlicerSettingsParser-Python3](https://github.com/Rob4226/OctoPrint-SlicerSettingsParser-Python3) for Python 3 support.
+Requires [Octoprint-SlicerSettingsParser](https://github.com/tjjfvi/OctoPrint-SlicerSettingsParser), but you'll need the [Octoprint-SlicerSettingsParser-Python3](https://github.com/Rob4226/OctoPrint-SlicerSettingsParser-Python3) fork for Python 3 support.
