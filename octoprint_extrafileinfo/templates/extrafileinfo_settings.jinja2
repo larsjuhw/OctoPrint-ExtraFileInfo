@@ -1,0 +1,92 @@
+<div class="control-group">
+    <h3>ExtraFileInfo Settings</h3>
+    <label><strong>Configure the slicer settings you want to show under the <div class="btn btn-mini"><i
+                    class="fas fa-chevron-down"></i></div> section of files.
+            <br>The settings will be added as <code>{Setting}: {val}{Unit}</code>.</strong></label>
+    <div class="alert alert-info">The "Setting" boxes need to be filled with the exact "key" value from
+        SlicerSettingsParser.</div>
+
+    <div class="control-group offset1">
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('1:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value:settings.plugins.extrafileinfo.config()[0].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[0].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[0].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('2:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[1].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[1].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[1].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('3:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[2].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[2].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[2].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('4:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[3].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[3].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[3].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('5:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[4].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[4].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[4].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('6:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[5].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[5].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[5].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('7:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[6].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[6].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[6].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('8:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[7].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[7].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[7].unit">
+        </form>
+        <form class="form-inline row">
+            <label class="control-label"><strong>{{ _('9:') }}</strong></label>
+            <input type="text" class="span4" placeholder="Key"
+                data-bind="value: settings.plugins.extrafileinfo.config()[8].key">
+            <input type="text" class="span4" placeholder="Label"
+                data-bind="value:settings.plugins.extrafileinfo.config()[8].label">
+            <input type="text" class="span2" placeholder="Unit"
+                data-bind="value: settings.plugins.extrafileinfo.config()[8].unit">
+        </form>
+    </div>
+</div>

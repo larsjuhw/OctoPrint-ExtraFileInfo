@@ -9,21 +9,23 @@ $(function() {
         var self = this;
 
         self.filesViewModel = parameters[0];
-        
-        //TODO add this as a setting instead
-        // Defined as [[key0, key1, ...], [unit1, unit2, ...]]
-        const visibleKeys = [["Layer Height", "Nozzle Diameter", "Infill Density", "Material Name"], [" mm", " mm", "%", ""]];
+        self.settingsViewModel = parameters[1];
+
         self.filesViewModel.ExtraFileInfo_getInfo = function(data) {
             const slicerSettings = data.slicer_settings;
+            var visibleKeys = self.settingsViewModel.settings.plugins.extrafileinfo.config();
             if (slicerSettings === undefined) {
                 return "Reload for more info<br>";
             }
             let returnStr = "";
-            for (let i = 0; i < visibleKeys[0].length; i++) {
-                if (slicerSettings[visibleKeys[0][i]] === undefined) {
+            for (let i = 0; i < visibleKeys.length; i++) {
+                if (slicerSettings[visibleKeys[i].key()] === undefined) {
                     continue;
                 }
-                returnStr = returnStr + visibleKeys[0][i] + ": " + slicerSettings[visibleKeys[0][i]] + visibleKeys[1][i] + "<br>";
+                const label = visibleKeys[i].label() || visibleKeys[i].key();
+                const value = slicerSettings[visibleKeys[i].key()];
+                const unit = visibleKeys[i].unit();
+                returnStr = returnStr + label + ": " + value + unit + "<br>";
             };
             return returnStr;
         };
@@ -42,7 +44,7 @@ $(function() {
 
     OCTOPRINT_VIEWMODELS.push({
         construct: ExtrafileinfoViewModel,
-        dependencies: [ 'filesViewModel' ],
+        dependencies: [ 'filesViewModel', 'settingsViewModel' ],
         elements: [ /* ... */ ]
     });
 });

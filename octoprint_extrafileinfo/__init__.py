@@ -1,17 +1,29 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-
 import octoprint.plugin
 
+
 class ExtraFileInfoPlugin(
-    octoprint.plugin.AssetPlugin,
-    octoprint.plugin.TemplatePlugin):
+        octoprint.plugin.AssetPlugin,
+        octoprint.plugin.TemplatePlugin,
+        octoprint.plugin.SettingsPlugin,
+        octoprint.plugin.StartupPlugin):
 
     def get_assets(self):
         return {
             "js": ["js/extrafileinfo.js"],
         }
+
+    def get_settings_defaults(self):
+        return dict(
+            config=[dict(key="", label="", unit="")]*9
+        )
+
+    def get_template_configs(self):
+        return [
+            dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=False)
+        ]
 
     ##~~ Softwareupdate hook
 
@@ -35,6 +47,7 @@ class ExtraFileInfoPlugin(
 
 __plugin_name__ = "ExtraFileInfo"
 __plugin_pythoncompat__ = ">=3,<4"
+
 
 def __plugin_load__():
     global __plugin_implementation__
