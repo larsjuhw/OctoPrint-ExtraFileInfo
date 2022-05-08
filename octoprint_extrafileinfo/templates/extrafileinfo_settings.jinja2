@@ -5,7 +5,12 @@
             <br>The settings will be added as <code>{Setting}: {val}{Unit}</code>.</strong></label>
     <div class="alert alert-info">The "Setting" boxes need to be filled with the exact "key" value from
         SlicerSettingsParser.</div>
-
+    <div class="alert alert-error" id="ufp_installed_warning"><button type="button" class="close"
+            data-dismiss="alert">&times;</button><strong>Warning!</strong> The plugin
+        Cura Thumbnails seems to be installed. This plugin is known to conflict with
+        SlicerSettingsParser on file upload. Use <a
+            href="https://plugins.octoprint.org/plugins/prusaslicerthumbnails/#cura">Slicer
+            Thumbnails</a> instead to solve this.</div>
     <div class="control-group offset1">
         <form class="form-inline row">
             <label class="control-label"><strong>{{ _('1:') }}</strong></label>

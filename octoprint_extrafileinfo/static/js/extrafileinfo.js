@@ -4,12 +4,19 @@
  * Author: Lars Wolter
  * License: AGPLv3
  */
-$(function() {
+$(function () {
     function ExtrafileinfoViewModel(parameters) {
         var self = this;
 
         self.filesViewModel = parameters[0];
         self.settingsViewModel = parameters[1];
+
+        self.settingsViewModel.onStartupComplete = function () {
+            // Show warning message if Cura Thumbnails is installed.
+            if (self.settingsViewModel.settings.plugins.UltimakerFormatPackage === undefined) {
+                $('#ufp_installed_warning').alert('close');
+            }
+        }
 
         self.filesViewModel.ExtraFileInfo_getInfo = function(data) {
             const slicerSettings = data.slicer_settings;
