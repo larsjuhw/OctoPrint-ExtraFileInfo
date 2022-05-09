@@ -3,8 +3,6 @@ Adds slicer settings to the additional data tab of each file. Uses [Octoprint-Sl
 
 ![img](https://user-images.githubusercontent.com/39745476/166110980-ca65be31-cba5-4fcd-aba4-c384fdc39366.png)
 
-This plugin is still WIP, but I have not encountered any issues.
-
 ## Setup
 
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
