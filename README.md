@@ -35,6 +35,12 @@ The Key, Label and Unit fields are directly injected into the view, without any 
 
 Only the settings that are configured and found by SlicerSettingsParser in the file are shown.
 
+The plugin also has an option to filter out specific characters in the values of all settings. For example, if your gcode contains this:
+
+`; filament_settings_id = "Prusament ASA"`
+
+then you can filter out the quotation marks if you want.
+
 
 ## Example
 

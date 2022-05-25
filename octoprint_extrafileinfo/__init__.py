@@ -17,7 +17,9 @@ class ExtraFileInfoPlugin(
 
     def get_settings_defaults(self):
         return dict(
-            config=[dict(key="", label="", unit="")]*9
+            config=[dict(key="", label="", unit="")]*9,
+            filterEnabled=False,
+            filter=""
         )
 
     def get_template_configs(self):

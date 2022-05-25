@@ -95,3 +95,20 @@
         </form>
     </div>
 </div>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('Enable Filter') }}</label>
+        <div class="controls">
+            <input type="checkbox" data-bind="checked: settings.plugins.extrafileinfo.filterEnabled">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">{{ _('Filtered Characters') }}</label>
+        <div class="controls">
+            <input type="text" class="input-medium" data-bind="value: settings.plugins.extrafileinfo.filter">
+        </div>
+    </div>
+    <span class="help-block">{{ _('Any characters entered in the filter field will be filtered from the displayed setting
+        values. Can be useful for cases such as:') }}</span>
+    <div class="well well-small">; filament_settings_id = "Prusament ASA"</div>
+</form>

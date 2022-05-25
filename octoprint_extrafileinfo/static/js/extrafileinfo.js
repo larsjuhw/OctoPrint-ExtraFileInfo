@@ -25,13 +25,27 @@ $(function () {
                 return "Reload for more info<br>";
             }
             let returnStr = "";
+
+            // Create filter regex if filter enabled
+            let filterRE;
+            if (self.settingsViewModel.settings.plugins.extrafileinfo.filterEnabled()) {
+                const filter = self.settingsViewModel.settings.plugins.extrafileinfo.filter();
+                filterRE = new RegExp('[' + filter.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ']', 'g');
+            }
+
             for (let i = 0; i < visibleKeys.length; i++) {
                 if (slicerSettings[visibleKeys[i].key()] === undefined) {
                     continue;
                 }
                 const label = visibleKeys[i].label() || visibleKeys[i].key();
-                const value = slicerSettings[visibleKeys[i].key()];
                 const unit = visibleKeys[i].unit();
+                var value = slicerSettings[visibleKeys[i].key()];
+
+                // Apply filter
+                if (self.settingsViewModel.settings.plugins.extrafileinfo.filterEnabled()) {
+                    value = value.replaceAll(filterRE, '');
+                }
+                
                 returnStr = returnStr + label + ": " + value + unit + "<br>";
             };
             return returnStr;
