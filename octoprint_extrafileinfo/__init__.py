@@ -17,14 +17,14 @@ class ExtraFileInfoPlugin(
 
     def get_settings_defaults(self):
         return dict(
-            config=[dict(key="", label="", unit="")]*9,
+            config=[],
             filterEnabled=False,
             filter=""
         )
 
     def get_template_configs(self):
         return [
-            dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=False)
+            dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=True)
         ]
 
     ##~~ Softwareupdate hook
