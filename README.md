@@ -53,7 +53,7 @@ The gcode file that I upload contains the following lines:
 ```
 The default settings of SlicerSettingsParser support this format. To display these values in the file info, I configure this plugin as such, while leaving the other settings empty:
 
-![example1](https://user-images.githubusercontent.com/39745476/167319682-c213b3aa-f246-42a7-abbd-f5d5a8b4d76a.png)
+![example1](https://user-images.githubusercontent.com/39745476/170833737-dc12760d-4f26-4d84-b0b4-b5b05a3d9429.png)
 
 This gives the following result in the files menu:
 
@@ -65,4 +65,4 @@ This gives the following result in the files menu:
 * SlicerSettingsParser does not parse newly uploaded files when Cura Thumbnails/UltimakerFormatPackage is installed, [as described here](https://github.com/tjjfvi/OctoPrint-SlicerSettingsParser/issues/7). Use [Slicer Thumbnails](https://plugins.octoprint.org/plugins/prusaslicerthumbnails/#cura) instead to solve this.
 
 ## Note
-If someone knows how to change the settings to a variable amount of entries, feel free to make a PR.
+Thanks to [EVSalomon](https://github.com/EVSalomon) for making the amount of entries variable

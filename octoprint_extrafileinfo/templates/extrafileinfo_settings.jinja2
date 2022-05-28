@@ -1,10 +1,10 @@
 <div class="control-group">
     <h3>ExtraFileInfo Settings</h3>
-    <label><strong>Configure the slicer settings you want to show under the <div class="btn btn-mini"><i
+    <label>Configure the slicer settings you want to show under the <div class="btn btn-mini"><i
                     class="fas fa-chevron-down"></i></div> section of files.
-            <br>The settings will be added as <code>{Setting}: {val}{Unit}</code>.</strong></label>
+            <br>The settings will be added as <code>{Setting}: {val}{Unit}</code></label>
     <div class="alert alert-info">The "Setting" boxes need to be filled with the exact "key" value from
-        SlicerSettingsParser.</div>
+        SlicerSettingsParser.<br><a href="https://github.com/larsjuhw/OctoPrint-ExtraFileInfo#Configuration">Read this explanation on GitHub for more info.</a></div>
     <div class="alert alert-error" id="ufp_installed_warning"><button type="button" class="close"
             data-dismiss="alert">&times;</button><strong>Warning!</strong> The plugin
         Cura Thumbnails seems to be installed. This plugin is known to conflict with
@@ -25,6 +25,10 @@
         </form>
     </div>
 </div>
+<h3>Filter Settings</h3>
+<span class="help-block">{{ _('Any characters entered in the filter field will be filtered from the displayed setting
+    values. Can be useful for cases where some of the values in your gcode contain quotation marks such as:') }}</span>
+<div class="well well-small">; filament_settings_id = "Prusament ASA"</div>
 <form class="form-horizontal">
     <div class="control-group">
         <label class="control-label">{{ _('Enable Filter') }}</label>
@@ -38,7 +42,4 @@
             <input type="text" class="input-medium" data-bind="value: settings.plugins.extrafileinfo.filter">
         </div>
     </div>
-    <span class="help-block">{{ _('Any characters entered in the filter field will be filtered from the displayed setting
-        values. Can be useful for cases such as:') }}</span>
-    <div class="well well-small">; filament_settings_id = "Prusament ASA"</div>
 </form>
