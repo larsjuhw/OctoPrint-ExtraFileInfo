@@ -10,6 +10,8 @@ $(function () {
 
         self.filesViewModel = parameters[0];
         self.settingsViewModel = parameters[1];
+        
+        self.config = ko.observableArray();
 
         self.settingsViewModel.onStartupComplete = function () {
             // Show warning message if Cura Thumbnails is installed.
@@ -60,6 +62,24 @@ $(function () {
             }
             returnStr = returnStr + self.filesViewModel.ExtraFileInfo_getInfo(data);
             return returnStr;
+        }
+        
+        self.settingsViewModel.addParserRow = function() {
+            console.log("Add");
+            self.settingsViewModel.settings.plugins.extrafileinfo.config.push({
+                'key':ko.observable(''),
+                'label':ko.observable(''),
+                'unit':ko.observable(''),
+            });
+        }
+
+        self.settingsViewModel.removeParserRow = function(row) {
+            console.log("remove");
+            self.settingsViewModel.settings.plugins.extrafileinfo.config.remove(row);
+        }
+
+        self.settingsViewModel.onBeforeBinding = function() {
+            self.config(self.settingsViewModel.settings.plugins.extrafileinfo.config());
         }
     }
 
