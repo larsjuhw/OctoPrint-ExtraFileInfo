@@ -65,7 +65,6 @@ $(function () {
         }
         
         self.settingsViewModel.addParserRow = function() {
-            console.log("Add");
             self.settingsViewModel.settings.plugins.extrafileinfo.config.push({
                 'key':ko.observable(''),
                 'label':ko.observable(''),
@@ -74,7 +73,6 @@ $(function () {
         }
 
         self.settingsViewModel.removeParserRow = function(row) {
-            console.log("remove");
             self.settingsViewModel.settings.plugins.extrafileinfo.config.remove(row);
         }
 
