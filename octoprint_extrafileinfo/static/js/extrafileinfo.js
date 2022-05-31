@@ -10,6 +10,7 @@ $(function () {
 
         self.filesViewModel = parameters[0];
         self.settingsViewModel = parameters[1];
+        self.printerState = parameters[2];
         
         self.config = ko.observableArray();
 
@@ -20,7 +21,7 @@ $(function () {
             }
         }
 
-        self.filesViewModel.ExtraFileInfo_getInfo = function(data) {
+        self.filesViewModel.ExtraFileInfo_getInfo = function(data,html) {
             const slicerSettings = data.slicer_settings;
             var visibleKeys = self.settingsViewModel.settings.plugins.extrafileinfo.config();
             if (slicerSettings === undefined) {
@@ -47,9 +48,13 @@ $(function () {
                 if (self.settingsViewModel.settings.plugins.extrafileinfo.filterEnabled()) {
                     value = value.replaceAll(filterRE, '');
                 }
-                
-                returnStr = returnStr + label + ": " + value + unit + "<br>";
+                if ( html ) {
+                    returnStr = returnStr + label + ": <strong>" + value + unit + "</strong><br>";
+                } else {
+                    returnStr = returnStr + label + ": " + value + unit + "<br>";
+                }
             };
+            if ( returnStr != "" && html ) returnStr += "<br>";
             return returnStr;
         };
 
@@ -60,7 +65,7 @@ $(function () {
             if (!returnStr.endsWith('<br>')) {
                 returnStr = returnStr + "<br>";
             }
-            returnStr = returnStr + self.filesViewModel.ExtraFileInfo_getInfo(data);
+            returnStr = returnStr + self.filesViewModel.ExtraFileInfo_getInfo(data,false);
             return returnStr;
         }
         
@@ -79,11 +84,33 @@ $(function () {
         self.settingsViewModel.onBeforeBinding = function() {
             self.config(self.settingsViewModel.settings.plugins.extrafileinfo.config());
         }
+
+        self.onBeforeBinding = function() {
+            var element = $("#state").find(".progress");
+            element.before("<div id='extrafileinfo_string'>" +
+                    "<hr /> <div data-bind='html: extrafileinfoHtml'></div>" +
+                    "</div>");
+        }
+
+        self.extrafileinfoHtml = ko.pureComputed(function() {
+            if (self.printerState.filename() === undefined) return "";
+            if (self.filesViewModel.filesOnlyList().length == 0) return "";
+
+            var list = self.filesViewModel.filesOnlyList();
+
+            if ( list.length > 0 ) {
+                let actualFile = list.find(elem => elem.path === self.printerState.filepath() );
+                if ( actualFile.slicer_settings !== undefined ) {
+                    return self.filesViewModel.ExtraFileInfo_getInfo(actualFile,true);
+                }
+            }
+            return "";
+        });
     }
 
     OCTOPRINT_VIEWMODELS.push({
         construct: ExtrafileinfoViewModel,
-        dependencies: [ 'filesViewModel', 'settingsViewModel' ],
-        elements: [ /* ... */ ]
+        dependencies: [ 'filesViewModel', 'settingsViewModel','printerStateViewModel' ],
+        elements: ['#extrafileinfo_string' ]
     });
 });
