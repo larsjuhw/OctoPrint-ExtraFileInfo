@@ -24,6 +24,7 @@ $(function () {
         self.filesViewModel.ExtraFileInfo_getInfo = function(data,html) {
             const slicerSettings = data.slicer_settings;
             var visibleKeys = self.settingsViewModel.settings.plugins.extrafileinfo.config();
+
             if (slicerSettings === undefined) {
                 return "Reload for more info<br>";
             }
@@ -40,8 +41,11 @@ $(function () {
                 if (slicerSettings[visibleKeys[i].key()] === undefined) {
                     continue;
                 }
+
                 const label = visibleKeys[i].label() || visibleKeys[i].key();
                 const unit = visibleKeys[i].unit();
+                const showInFilesList = visibleKeys[i].showInFilesList();
+                const showInStatesContainer = visibleKeys[i].showInStatesContainer();
                 var value = slicerSettings[visibleKeys[i].key()];
 
                 // Apply filter
@@ -49,9 +53,9 @@ $(function () {
                     value = value.replaceAll(filterRE, '');
                 }
                 if ( html ) {
-                    returnStr = returnStr + label + ": <strong>" + value + unit + "</strong><br>";
+                    if ( showInStatesContainer ) returnStr = returnStr + label + ": <strong>" + value + unit + "</strong><br>";
                 } else {
-                    returnStr = returnStr + label + ": " + value + unit + "<br>";
+                    if ( showInFilesList ) returnStr = returnStr + label + ": " + value + unit + "<br>";
                 }
             };
             if ( returnStr != "" && html ) returnStr += "<br>";
@@ -74,6 +78,8 @@ $(function () {
                 'key':ko.observable(''),
                 'label':ko.observable(''),
                 'unit':ko.observable(''),
+                'showInFilesList': ko.observable(true),
+                'showInStatesContainer': ko.observable(true)
             });
         }
 
