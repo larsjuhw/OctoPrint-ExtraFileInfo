@@ -27,23 +27,34 @@ class ExtraFileInfoPlugin(
             dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=False)
         ]
 
-    
     def get_settings_version(self):
         return 2
 
-
+    def on_after_startup(self):
+        self._logger.info('on_after_startup')
+        cfg = self._settings.get(["config"])
+        for i in range(len(cfg)):
+            if hasattr(cfg[i],'showInStatesContainer') == False:
+                cfg[i]['showInStatesContainer'] = True
+                cfg[i]['showInFilesList'] = True
+        self._settings.set(["config"], cfg)
+        return
+        
     def on_settings_migrate(self, target, current):
         self._logger.info('Migrating settings: {}=>{}'.format(current, target))
+        cfg = self._settings.get(["config"])
         if current is None and target == 2:
-            cfg = self._settings.get(["config"])
             if cfg is None or (isinstance(cfg, list) and len(cfg) == 0):
                 return
 
             while {'key': '', 'label': '', 'unit': ''} in cfg:
                 cfg.remove({'key': '', 'label': '', 'unit': ''})
-        
-            self._settings.set(["config"], cfg)
-            return
+        for i in range(len(cfg)):
+            if hasattr(cfg[i],'showInStatesContainer') == False:
+                cfg[i]['showInStatesContainer'] = True
+                cfg[i]['showInFilesList'] = True
+        self._settings.set(["config"], cfg)
+        return
 
     ##~~ Softwareupdate hook
 
