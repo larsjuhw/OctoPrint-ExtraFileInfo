@@ -101,12 +101,13 @@ $(function () {
         self.extrafileinfoHtml = ko.pureComputed(function() {
             if (self.printerState.filename() === undefined) return "";
             if (self.filesViewModel.filesOnlyList().length == 0) return "";
+            if (self.printerState.filepath() === undefined) return "";
 
             var list = self.filesViewModel.filesOnlyList();
 
             if ( list.length > 0 ) {
                 let actualFile = list.find(elem => elem.path === self.printerState.filepath() );
-                if ( actualFile.slicer_settings !== undefined ) {
+                if ( actualFile !== undefined && actualFile.slicer_settings !== undefined ) {
                     return self.filesViewModel.ExtraFileInfo_getInfo(actualFile,true);
                 }
             }

@@ -28,31 +28,24 @@ class ExtraFileInfoPlugin(
         ]
 
     def get_settings_version(self):
-        return 2
-
-    def on_after_startup(self):
-        self._logger.info('on_after_startup')
-        cfg = self._settings.get(["config"])
-        for i in range(len(cfg)):
-            if hasattr(cfg[i],'showInStatesContainer') == False:
-                cfg[i]['showInStatesContainer'] = True
-                cfg[i]['showInFilesList'] = True
-        self._settings.set(["config"], cfg)
-        return
+        return 3
         
     def on_settings_migrate(self, target, current):
         self._logger.info('Migrating settings: {}=>{}'.format(current, target))
         cfg = self._settings.get(["config"])
-        if current is None and target == 2:
-            if cfg is None or (isinstance(cfg, list) and len(cfg) == 0):
-                return
+        if cfg is None or (isinstance(cfg, list) and len(cfg) == 0):
+            return
 
+        if current is None and target > 1:
             while {'key': '', 'label': '', 'unit': ''} in cfg:
                 cfg.remove({'key': '', 'label': '', 'unit': ''})
-        for i in range(len(cfg)):
-            if hasattr(cfg[i],'showInStatesContainer') == False:
-                cfg[i]['showInStatesContainer'] = True
-                cfg[i]['showInFilesList'] = True
+
+        if (current is None or current <= 2) and target >= 3:
+            for i in range(len(cfg)):
+                if 'showInStatesContainer' not in cfg[i]:
+                    cfg[i]['showInStatesContainer'] = True
+                    cfg[i]['showInFilesList'] = True
+
         self._settings.set(["config"], cfg)
         return
 

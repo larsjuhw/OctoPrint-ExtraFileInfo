@@ -21,7 +21,7 @@
                     <th>Label</th>
                     <th>Unit</th>
                     <th>Display</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: settings.plugins.extrafileinfo.config">
@@ -34,7 +34,7 @@
                             <input type="checkbox" data-bind="checked: showInFilesList"> Show in files list
                         </label>
                         <label class='checkbox'>
-                            <input type="checkbox" data-bind="checked: showInStatesContainer"> Show in states container
+                            <input type="checkbox" data-bind="checked: showInStatesContainer"> Show in active print info
                         </label>
                     </td>
                     <td><a class="btn btn-mini icon-trash" data-bind="click: $root.removeParserRow"></a></td>

@@ -14,11 +14,11 @@ plugin_package = "octoprint_extrafileinfo"
 plugin_name = "OctoPrint-ExtraFileInfo"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.2.0"
+plugin_version = "1.3.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Adds slicer settings to a file's additional data column."""
+plugin_description = """Adds slicer settings to a file's additional data column and or the active print info."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "Lars Wolter"
