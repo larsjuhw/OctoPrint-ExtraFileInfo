@@ -17,24 +17,24 @@
         <table class='table table-striped table-condensed'>
             <thead>
                 <tr>
-                    <th>Key</th>
-                    <th>Label</th>
-                    <th>Unit</th>
-                    <th>Display</th>
-                    <th></th>
+                    <th style="width:30%;">Key</th>
+                    <th style="width:30%;">Label</th>
+                    <th style="width:15%;">Unit</th>
+                    <th style="width:20%;">Show in</th>
+                    <th style="width:5%;"></th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: settings.plugins.extrafileinfo.config">
                 <tr>
-                    <td><input type="text" class='input-small' placeholder="Key" data-bind="value: key"></td>
-                    <td><input type="text" class='input-small' placeholder="Label" data-bind="value: label"></td>
-                    <td><input type="text" class='input-small' data-bind="value: unit"></td>
+                    <td><input type="text" style="width: 90%;" placeholder="Key" data-bind="value: key"></td>
+                    <td><input type="text" style="width: 90%;" placeholder="Label" data-bind="value: label"></td>
+                    <td><input type="text" style="width: 80%;" placeholder="Unit" data-bind="value: unit"></td>
                     <td>
                         <label class='checkbox'>
-                            <input type="checkbox" data-bind="checked: showInFilesList"> Show in files list
+                            <input type="checkbox" data-bind="checked: showInFilesList">File info
                         </label>
                         <label class='checkbox'>
-                            <input type="checkbox" data-bind="checked: showInStatesContainer"> Show in active print info
+                            <input type="checkbox" data-bind="checked: showInStatesContainer">Active print info
                         </label>
                     </td>
                     <td><a class="btn btn-mini icon-trash" data-bind="click: $root.removeParserRow"></a></td>

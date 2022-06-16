@@ -17,7 +17,7 @@ class ExtraFileInfoPlugin(
 
     def get_settings_defaults(self):
         return dict(
-            config=[],
+            config=[dict(key="", label="", unit="", showInFilesList=True, showInStatesContainer=True)],
             filterEnabled=False,
             filter=""
         )
