@@ -1,7 +1,9 @@
 # OctoPrint-ExtraFileInfo
-Adds slicer settings to the additional data tab of each file. Uses [Octoprint-SlicerSettingsParser-Python3](https://github.com/Rob4226/OctoPrint-SlicerSettingsParser-Python3) (which should install automatically) to get the slicer data from the gcode.
+Adds slicer settings to the additional data tab of each file and/or the active print info. Uses [Octoprint-SlicerSettingsParser-Python3](https://github.com/Rob4226/OctoPrint-SlicerSettingsParser-Python3) (which should install automatically) to get the slicer data from the gcode.
 
-![img](https://user-images.githubusercontent.com/39745476/166110980-ca65be31-cba5-4fcd-aba4-c384fdc39366.png)
+Additional Data | Active Print Info
+:-:|:-:
+![img](https://user-images.githubusercontent.com/39745476/166110980-ca65be31-cba5-4fcd-aba4-c384fdc39366.png) | ![image](https://user-images.githubusercontent.com/39745476/173201083-3b36083e-39a1-4831-8375-840848b16b6b.png)
 
 ## Setup
 
@@ -53,7 +55,7 @@ The gcode file that I upload contains the following lines:
 ```
 The default settings of SlicerSettingsParser support this format. To display these values in the file info, I configure this plugin as such, while leaving the other settings empty:
 
-![example1](https://user-images.githubusercontent.com/39745476/170833737-dc12760d-4f26-4d84-b0b4-b5b05a3d9429.png)
+![example1](https://user-images.githubusercontent.com/39745476/173201388-6e957c01-3399-42fb-bbf7-db6241f13897.png)
 
 This gives the following result in the files menu:
 

@@ -17,7 +17,7 @@ class ExtraFileInfoPlugin(
 
     def get_settings_defaults(self):
         return dict(
-            config=[],
+            config=[dict(key="", label="", unit="", showInFilesList=True, showInStatesContainer=True)],
             filterEnabled=False,
             filter=""
         )
@@ -27,23 +27,27 @@ class ExtraFileInfoPlugin(
             dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=False)
         ]
 
-    
     def get_settings_version(self):
-        return 2
-
-
+        return 3
+        
     def on_settings_migrate(self, target, current):
         self._logger.info('Migrating settings: {}=>{}'.format(current, target))
-        if current is None and target == 2:
-            cfg = self._settings.get(["config"])
-            if cfg is None or (isinstance(cfg, list) and len(cfg) == 0):
-                return
+        cfg = self._settings.get(["config"])
+        if cfg is None or (isinstance(cfg, list) and len(cfg) == 0):
+            return
 
+        if current is None and target > 1:
             while {'key': '', 'label': '', 'unit': ''} in cfg:
                 cfg.remove({'key': '', 'label': '', 'unit': ''})
-        
-            self._settings.set(["config"], cfg)
-            return
+
+        if (current is None or current <= 2) and target >= 3:
+            for i in range(len(cfg)):
+                if 'showInStatesContainer' not in cfg[i]:
+                    cfg[i]['showInStatesContainer'] = True
+                    cfg[i]['showInFilesList'] = True
+
+        self._settings.set(["config"], cfg)
+        return
 
     ##~~ Softwareupdate hook
 
