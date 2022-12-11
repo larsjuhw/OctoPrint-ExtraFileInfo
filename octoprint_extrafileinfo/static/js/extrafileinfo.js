@@ -65,11 +65,17 @@ $(function () {
         // Hijack the getAdditionalData function and add the custom data
         let oldGetData = self.filesViewModel.getAdditionalData;
         self.filesViewModel.getAdditionalData = function(data) {
+            let extraInfo = self.filesViewModel.ExtraFileInfo_getInfo(data, false);
             let returnStr = "" + oldGetData(data);
-            if (!returnStr.endsWith('<br>')) {
-                returnStr = returnStr + "<br>";
+            if (extraInfo.length == 0) {
+                return returnStr;
             }
-            returnStr = returnStr + self.filesViewModel.ExtraFileInfo_getInfo(data,false);
+
+            if (!returnStr.endsWith('<br>')) {
+                returnStr += "<br>";
+            }
+            returnStr += "<hr style=\"margin:2px 0;\">";
+            returnStr += extraInfo;
             return returnStr;
         }
         

@@ -62,7 +62,17 @@ class ExtraFileInfoPlugin(
                 "user": "larsjuhw",
                 "repo": "OctoPrint-ExtraFileInfo",
                 "current": self._plugin_version,
-
+                "stable_branch": {
+                    "name": "Stable",
+                    "branch": "master",
+                    "comittish": ["master"],
+                }, "prerelease_branches": [
+                    {
+                        "name": "Release Candidate",
+                        "branch": "rc",
+                        "comittish": ["rc", "master"],
+                    }
+                ],
                 # update method: pip
                 "pip": "https://github.com/larsjuhw/OctoPrint-Extrafileinfo/archive/{target_version}.zip",
             }
