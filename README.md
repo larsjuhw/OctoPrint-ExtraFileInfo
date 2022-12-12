@@ -12,7 +12,7 @@ or manually using this URL:
 
     https://github.com/larsjuhw/OctoPrint-Extrafileinfo/archive/master.zip
 
-Requires [Octoprint-SlicerSettingsParser](https://github.com/tjjfvi/OctoPrint-SlicerSettingsParser), **but you'll need the [Octoprint-SlicerSettingsParser-Python3](https://github.com/Rob4226/OctoPrint-SlicerSettingsParser-Python3) fork for Python 3 support.**
+Requires [Octoprint-SlicerSettingsParser](https://github.com/larsjuhw/OctoPrint-SlicerSettingsParser) which will install automatically
 
 
 ## Configuration
