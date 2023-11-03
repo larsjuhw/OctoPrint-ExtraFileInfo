@@ -1,0 +1,23 @@
+.additionalInfo {
+    padding-bottom: 0px !important;
+}
+
+#extrafileinfo-fm {
+    padding-bottom: 22px !important;
+}
+
+#extrafileinfo-editor {
+    overflow: auto;
+    margin: auto;
+    width: 95%;
+    height: 280px;
+    position: relative;
+    padding: 0;
+    display:inline-block;
+}
+
+#extrafileinfo-force-render {
+    margin-left: 20px;
+    margin-bottom: 40px;
+    margin-right: 10px;
+}

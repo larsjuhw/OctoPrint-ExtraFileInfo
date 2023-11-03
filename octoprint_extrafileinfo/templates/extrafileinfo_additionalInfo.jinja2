@@ -1,0 +1,11 @@
+{% for item in _config_ %}
+        {% if _location_ == 'print' %}
+            {% if item.showInStatesContainer == true %}
+                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: <strong>{{ _settings_[item.key]|replace(_filter_, '')|e }}{{ item.unit }}</strong><br>
+            {% endif %}
+        {% else %}
+            {% if item.showInFilesList == true %}
+                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: {{ _settings_[item.key]|replace(_filter_, '')|e }}{{ item.unit }}<br>
+            {% endif %}
+        {% endif %}
+{% endfor %}

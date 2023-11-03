@@ -1,7 +1,15 @@
-<div class="row-fluid">
-    <h3>ExtraFileInfo Settings</h3>
-    <label>Configure the slicer settings you want to show under the <div class="btn btn-mini"><i
-                    class="fas fa-chevron-down"></i></div> section of files.
+<h3>ExtraFileInfo Settings</h3>
+<span>Configure the slicer settings you want to show under the <div class="btn btn-mini"><i
+                class="fas fa-chevron-down"></i></div> section of files.</span>
+    <div class="control-group">
+        <label class="control-label" for="settings-setuptype">Setup Type</label>
+        <select data-bind="value: settingsViewModel.settings.plugins.extrafileinfo.setup_type" id="settings-setuptype">
+            <option>Simple</option>
+            <option>Custom Jinja2 Template</option>
+        </select>
+    </div>
+
+<div data-bind="visible: settingsViewModel.settings.plugins.extrafileinfo.setup_type() == 'Simple'" class="row-fluid">
             <br>The settings will be added as <code>{Setting}: {val}{Unit}</code></label>
     <div class="alert alert-info">The "Setting" boxes need to be filled with the exact "key" value from
         SlicerSettingsParser.<br><a href="https://github.com/larsjuhw/OctoPrint-ExtraFileInfo#Configuration">Read this explanation on GitHub for more info.</a></div>
@@ -24,7 +32,7 @@
                     <th style="width:5%;"></th>
                 </tr>
             </thead>
-            <tbody data-bind="foreach: settings.plugins.extrafileinfo.config">
+            <tbody data-bind="foreach: settingsViewModel.settings.plugins.extrafileinfo.config">
                 <tr>
                     <td><input type="text" style="width: 90%;" placeholder="Key" data-bind="value: key"></td>
                     <td><input type="text" style="width: 90%;" placeholder="Label" data-bind="value: label"></td>
@@ -42,22 +50,66 @@
             </tbody>
         </table>
     </div>
+    <h4>Filter Settings</h4>
+    <span class="help-block">{{ _('Any characters entered in the filter field will be filtered from the displayed setting
+        values. Can be useful for cases where some of the values in your gcode contain quotation marks such as:') }}</span>
+    <div class="well well-small">; filament_settings_id = "Prusament ASA"</div>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label">{{ _('Enable Filter') }}</label>
+            <div class="controls">
+                <input type="checkbox" data-bind="checked: settingsViewModel.settings.plugins.extrafileinfo.filterEnabled">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{ _('Filtered Characters') }}</label>
+            <div class="controls">
+                <input type="text" class="input-medium" data-bind="value: settingsViewModel.settings.plugins.extrafileinfo.filter">
+            </div>
+        </div>
+    </form>
 </div>
-<h3>Filter Settings</h3>
-<span class="help-block">{{ _('Any characters entered in the filter field will be filtered from the displayed setting
-    values. Can be useful for cases where some of the values in your gcode contain quotation marks such as:') }}</span>
-<div class="well well-small">; filament_settings_id = "Prusament ASA"</div>
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label">{{ _('Enable Filter') }}</label>
-        <div class="controls">
-            <input type="checkbox" data-bind="checked: settings.plugins.extrafileinfo.filterEnabled">
+<div data-bind="visible: settingsViewModel.settings.plugins.extrafileinfo.setup_type() == 'Custom Jinja2 Template'">
+    <p>The Jinja template below will be rendered with the following variables:</p>
+    <ul>
+        <li>All slicer settings will be available with the keys as they appear in the gcode</li>
+        <li>The variable <code>_location_</code> will be <code>'file'</code> and <code>'print'</code>
+        when the template is rendered for the file and print views, respectively. This allows you to make the file
+        and print views different as such: <br>
+        <code>{% raw %}{% if _location_ == 'print' %}&lt;strong&gt;{{ layer_height }}&lt;/strong&gt;{% endif %}{% endraw %}</code></li>
+    </ul>
+    <div class="alert alert-block">
+      <h4>Warning!</h4>
+      Do not blindly copy someone's template from the internet. Although the slicer setting values are sanitized, the template
+      is not so that more freedom is possible. The template can therefore contain arbitrary JavaScript code. 
+    </div>
+    <label class="control-label" for="settings-custom-template"><strong>Custom Jinja2 Template</strong></label>
+    <div id="extrafileinfo-editor"></div>
+    <script src="plugin/extrafileinfo/static/js/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="plugin/extrafileinfo/static/js/lib/ace/mode-django.js" type="text/javascript" charset="utf-8"></script>
+</div>
+
+<div class="row-fluid">
+    <div class="span4" id="extrafileinfo-force-render">
+        <button class="btn btn-primary" data-bind="click: forceRender, enable:!rendering_info()">
+            <i class="fa fa-spinner fa-spin" data-bind="visible: rendering_info" style="display: none;"></i>
+            Force Update
+        </button>
+    </div>
+    <div class="span7">
+        <div class="alert alert-info" data-bind="visible: rendering_info">
+            <strong>Rendering all file info...</strong><br>
+            This should normally not take long. Check the logs for errors if it does.
+        </div>
+        <div class="alert alert-success" data-bind="visible: rendering_done">
+            <button type="button" class="close" data-bind="click: function(data){rendering_done(false)}"
+                aria-hidden="true">&times;</button>
+            <strong>Done!</strong> You may not see the changes until you reload the file list or the page.
+        </div>
+        <div class="alert alert-error" data-bind="visible: !show_error_alert">
+            <button type="button" class="close" data-bind="click: function(data){show_error_alert(false)}"
+                aria-hidden="true">&times;</button>
+            <strong>Error!</strong> Check the logs for more information. <a href="https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/issues/new/choose">Create an issue</a> on GitHub if you need help.
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label">{{ _('Filtered Characters') }}</label>
-        <div class="controls">
-            <input type="text" class="input-medium" data-bind="value: settings.plugins.extrafileinfo.filter">
-        </div>
-    </div>
-</form>
+</div>
