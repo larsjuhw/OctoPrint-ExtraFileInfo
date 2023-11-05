@@ -112,7 +112,7 @@ $(function () {
             
             // Inject the information div into printer state
             $('#job_progressBar').parent().before(
-                `<hr/><div data-bind="html: $root.ExtraFileInfo_getExtraInfo"></div>`
+                `<hr/><div data-bind="html: $root.ExtraFileInfo_getExtraInfo" id="extrafileinfo-ps"></div>`
             )
         });
 

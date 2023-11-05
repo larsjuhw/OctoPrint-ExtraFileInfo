@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 
+import os.path as ospath
 import re
 
 import octoprint.plugin
@@ -14,9 +15,12 @@ SETUP_CUSTOM = 'Custom Jinja2 Template'
 KEY_SIMPLE = 'simple'
 KEY_CUSTOM = 'custom'
 
+#TODO: maybe add switch that disables sanitizing of labels
+#TODO: update readme and add new images to plugins.octoprint.org
+#TODO: additional variables for templates (e.g. filename, filesize, date, time, etc.)
 #TODO: add example template to settings
 #TODO: test settings migration
-#TODO: check if the path to the templates folder is correct for the filesystemloader, need to test with other installation
+#TODO: only show settings if they are available in default template
 class ExtraFileInfoPlugin(
         octoprint.plugin.AssetPlugin,
         octoprint.plugin.EventHandlerPlugin,
@@ -34,10 +38,11 @@ class ExtraFileInfoPlugin(
             trim_blocks=True,
             lstrip_blocks=True,
         )
+        templates_path = ospath.join(ospath.dirname(ospath.realpath(__file__)), 'templates')
         self.environment_simple = SandboxedEnvironment(
             cache_size=1,
             autoescape=True,
-            loader=FileSystemLoader('octoprint_extrafileinfo/templates/'),
+            loader=FileSystemLoader(templates_path),
             trim_blocks=True,
             lstrip_blocks=True,
         )
