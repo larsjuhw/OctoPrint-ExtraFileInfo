@@ -3,7 +3,7 @@ Adds slicer settings to the additional data tab of each file and/or the active p
 
 Additional Data | Active Print Info
 :-:|:-:
-![img](https://user-images.githubusercontent.com/39745476/166110980-ca65be31-cba5-4fcd-aba4-c384fdc39366.png) | ![image](https://user-images.githubusercontent.com/39745476/173201083-3b36083e-39a1-4831-8375-840848b16b6b.png)
+![image](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/e5b6cf41-35a7-4f1e-9a93-206e32a6efd1) | ![image](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/6120ccc9-843e-49c7-ae95-3539bb7f29b8)
 
 ## Setup
 
@@ -75,12 +75,10 @@ The gcode file that I upload contains the following lines:
 ```
 The default settings of SlicerSettingsParser support this format. To display these values in the file info, I configure this plugin as such, while leaving the other settings empty:
 
-![example1](https://user-images.githubusercontent.com/39745476/173201388-6e957c01-3399-42fb-bbf7-db6241f13897.png)
+![example1](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/b440b9c8-612d-4b59-95f7-fe751ebb5dbd)
 
 This gives the following result in the files menu:
-
-![example2](https://user-images.githubusercontent.com/39745476/167319851-153a04f6-fa25-4d85-8c32-e2345b508635.png)
-
+![example2](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/69d3c4a5-66fd-4afe-b440-5e685e5872a3)
 
 ## Known Issues
 
