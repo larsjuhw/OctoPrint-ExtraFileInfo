@@ -50,15 +50,16 @@ then you can filter out the quotation marks if you want.
 
 
 ### Custom Jinja Template
-Using a Jinja template allow you to fit the slicer settings output to your own taste. You can use if-else statements, enter HTML tags, use filters and tests, and customize the layout entirely. The slicer settings can be accessed simply by using their key as a variable, e.g.: `{{ layer_height }}`. The variables are automatically HTML-escaped for safety.
+Using a Jinja template allow you to fit the slicer settings output to your own taste. You can use if-else statements, enter HTML tags, use filters and tests, and customize the layout entirely. The slicer settings can be accessed simply by using their key in the `st` dict, e.g.: `{{ st.layer_height }}`. The dict has a default value "N/A" for missing keys. This behaviour can be disabled in the plugin settings. The variables are automatically HTML-escaped for safety.
 
 **Do not blindly copy anyone's template from the internet. The templates can contain HTML tags and therefore arbitrary code.**
 
-The following extra variables are accessible for further customization:
-| Variable     | Value                                                                                                 |
-|--------------|-------------------------------------------------------------------------------------------------------|
-| `_location_` | `'file'` or `'print'`, depending on whether the render is for the file list or print status container |
-| TBD          |                                                                                                       |
+The following variables are currently accessible in the template:
+
+| Variable     | Value                                                                                                    |
+|--------------|----------------------------------------------------------------------------------------------------------|
+| `st`         | Dictionary with all slicer settings. Default value "N/A" for missing keys (can be disabled in settings). |
+| `_location_` | `'file'` or `'print'`, depending on whether the render is for the file list or print status container    |
 
 #### Example templates:
 

@@ -1,11 +1,13 @@
 {% for item in _config_ %}
+    {% if _defaultdict_ == true or item.key in st %}
         {% if _location_ == 'print' %}
             {% if item.showInStatesContainer == true %}
-                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: <strong>{{ _settings_[item.key]|replace(_filter_, '')|e }}{{ item.unit }}</strong><br>
+                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: <strong>{{ st[item.key]|replace(_filter_, '')|e }}{{ item.unit }}</strong><br>
             {% endif %}
         {% else %}
             {% if item.showInFilesList == true %}
-                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: {{ _settings_[item.key]|replace(_filter_, '')|e }}{{ item.unit }}<br>
+                {% if item.label %}{{ item.label }}{% else %}{{ item.key }}{% endif %}: {{ st[item.key]|replace(_filter_, '')|e }}{{ item.unit }}<br>
             {% endif %}
         {% endif %}
+    {% endif %}
 {% endfor %}

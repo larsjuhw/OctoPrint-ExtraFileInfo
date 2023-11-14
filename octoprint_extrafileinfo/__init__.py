@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import os.path as ospath
 import re
+from collections import defaultdict
 
 import octoprint.plugin
 from jinja2 import FileSystemLoader, TemplateSyntaxError
@@ -15,12 +16,8 @@ SETUP_CUSTOM = 'Custom Jinja2 Template'
 KEY_SIMPLE = 'simple'
 KEY_CUSTOM = 'custom'
 
-#TODO: maybe add switch that disables sanitizing of labels
 #TODO: update readme and add new images to plugins.octoprint.org
-#TODO: additional variables for templates (e.g. filename, filesize, date, time, etc.)
-#TODO: add example template to settings
-#TODO: test settings migration
-#TODO: only show settings if they are available in default template
+
 class ExtraFileInfoPlugin(
         octoprint.plugin.AssetPlugin,
         octoprint.plugin.EventHandlerPlugin,
@@ -47,14 +44,11 @@ class ExtraFileInfoPlugin(
             lstrip_blocks=True,
         )
 
-        if self._settings.get(['setup_type']) == SETUP_CUSTOM:
-            self._load_custom_template()
-        elif self._settings.get(['setup_type']) == SETUP_SIMPLE: 
-            self._load_simple_template()
+        self._load_selected_template(self._settings.get(['setup_type']))
 
         if ExtraFileInfoPlugin.migrate_to_version_4:
             self._logger.info('Migrating settings to version 4: rendering info for all files.')
-            self._render_all_file_info(self.default_template, KEY_SIMPLE, packed=True)            
+            self._render_all_file_info(self.default_template, KEY_SIMPLE)            
 
     def get_settings_defaults(self):
         return dict(
@@ -62,6 +56,7 @@ class ExtraFileInfoPlugin(
             filterEnabled=False,
             filter="",
             setup_type=SETUP_SIMPLE,
+            enable_defaultdict=False,
             custom_template=""
         )
     
@@ -69,6 +64,12 @@ class ExtraFileInfoPlugin(
         return {
             'force_render': []
         }
+
+    def _load_selected_template(self, setup_type: str):
+        if setup_type == SETUP_CUSTOM:
+            self._load_custom_template()
+        elif setup_type == SETUP_SIMPLE:
+            self._load_simple_template()
 
     def _load_custom_template(self):
         try:
@@ -96,21 +97,31 @@ class ExtraFileInfoPlugin(
         return_value = super().on_settings_save(data)
 
         # Load template again if settings changed or setup type changed
-        if 'config' in data or 'filter' in data or 'filterEnabled' in data or ('setup_type' in data and data['setup_type'] == SETUP_SIMPLE):
-            self._load_simple_template()
+        if 'setup_type' in data:
+            self._load_selected_template(data['setup_type'])
+        # Load filter if filter settings changed and setup type not changed
+        elif 'filter' in data or 'filterEnabled'in data:
+            self._load_filter_pattern()
+        # Load custom template if it changed and setup type not changed
+        elif 'custom_template' in data:
+            self._load_custom_template()
 
         # Re-render everything if the settings changed
         if 'config' in data or 'filter' in data or 'filterEnabled' in data:
-            self._render_all_file_info(self.default_template, KEY_SIMPLE, packed=True)
+            self._render_all_file_info(self.default_template, KEY_SIMPLE)
         
-        # Load custom template if it was changed or setup type changed
-        if 'custom_template' in data or 'setup_type' in data and data['setup_type'] == SETUP_CUSTOM:
-            self._load_custom_template()
-
         # Re-render everything if the custom template changed
         if 'custom_template' in data:
-            self._render_all_file_info(self.template, KEY_CUSTOM, packed=False, br_replace=True)
-            
+            self._render_all_file_info(self.template, KEY_CUSTOM, br_replace=True)
+
+        # Re-render everything if the setup type changed
+        if 'enable_defaultdict' in data:
+            setup_type = self._settings.get(['setup_type'])
+            if setup_type == SETUP_SIMPLE:
+                self._render_all_file_info(self.default_template, KEY_SIMPLE)
+            elif setup_type == SETUP_CUSTOM:
+                self._render_all_file_info(self.template, KEY_CUSTOM, br_replace=True)
+
         return return_value
 
     def get_assets(self):
@@ -131,35 +142,33 @@ class ExtraFileInfoPlugin(
 
             if active_template == SETUP_SIMPLE:
                 filter_enabled = self._settings.get(['filterEnabled'])
-                self._render_file_info(payload['path'], self.default_template, KEY_SIMPLE, packed=True, filter=filter_enabled)
+                self._render_file_info(payload['path'], self.default_template, KEY_SIMPLE, filter=filter_enabled)
             elif active_template == SETUP_CUSTOM:
-                self._render_file_info(payload['path'], self.template, KEY_CUSTOM, packed=False, br_replace=True)
+                self._render_file_info(payload['path'], self.template, KEY_CUSTOM, br_replace=True)
 
 
-    def _render_file_info(self, path: str, template: Template, key: str, packed: bool, filter=None, br_replace: bool=False):
+    def _render_file_info(self, path: str, template: Template, key: str, filter=None, br_replace: bool=False):
         """Renders the default simple template for the given file and stores it in the file's metadata.
-        Replaces all newlines with <br> if br_replace is True.
-        Packs all slicer settings into a dict if packed is True."""
+        Replaces all newlines with <br> if br_replace is True."""
         path = self._storage.path_on_disk(path)
         slicer_settings = self._storage.get_additional_metadata(path, 'slicer_settings')
-
+        enable_defaultdict = self._settings.get(['enable_defaultdict'])
 
         # Apply filter if enabled
         if key == KEY_SIMPLE and filter is None:
             filter = self._settings.get(['filterEnabled'])
         if filter and key == KEY_SIMPLE:
-                slicer_settings = {k: self.filter_pattern.sub('', v) for k, v in slicer_settings.items()}
+            slicer_settings = {k: self.filter_pattern.sub('', v) for k, v in slicer_settings.items()}
 
-        # Pack slicer settings into a dict if packed is True
-        if packed:
-            slicer_settings = {'_settings_': slicer_settings}
+        if enable_defaultdict:
+            slicer_settings = defaultdict(lambda: "N/A", slicer_settings)
 
-
+        ctx = {'st': slicer_settings, '_defaultdict_': enable_defaultdict}
         if key == KEY_SIMPLE:
-            slicer_settings['_config_'] = self._settings.get(['config'])
-
-        file_rendered_template = template.render({**slicer_settings, '_location_': 'file'})
-        print_rendered_template = template.render({**slicer_settings, '_location_': 'print'})
+            ctx['_config_'] = self._settings.get(['config'])
+        
+        file_rendered_template = template.render({**ctx, '_location_': 'file'})
+        print_rendered_template = template.render({**ctx, '_location_': 'print'})
 
         if br_replace:
             file_rendered_template = file_rendered_template.replace('\n', '<br>')
@@ -168,16 +177,16 @@ class ExtraFileInfoPlugin(
         self._storage.set_additional_metadata(path, f'extrafileinfo_render_{key}_file', file_rendered_template, overwrite=True)
         self._storage.set_additional_metadata(path, f'extrafileinfo_render_{key}_print', print_rendered_template, overwrite=True)
 
-        self._logger.debug(f'Rendered template for {path}, output to extrafileinfo_render_{key}_print')
+        self._logger.debug(f'Rendered template for {path} using {key} template.')
 
-    def _render_all_file_info(self, template: Template, key: str, packed: bool, filter: bool=None, br_replace: bool=False):
+    def _render_all_file_info(self, template: Template, key: str, filter: bool=None, br_replace: bool=False):
         """Renders the file info for every gcode file in the storage"""
         def recurse(files):
             for file in files.values():
                 if file['type'] == 'folder':
                     recurse(file['children'])
                 elif file['typePath'][1] == 'gcode':
-                    self._render_file_info(file['path'], template, key, packed, filter, br_replace)
+                    self._render_file_info(file['path'], template, key, filter, br_replace)
 
         if filter is None:
             filter = self._settings.get(['filterEnabled'])
@@ -194,9 +203,9 @@ class ExtraFileInfoPlugin(
             setup_type = self._settings.get(['setup_type'])
             if setup_type == SETUP_SIMPLE:
                 filter_enabled = self._settings.get(['filterEnabled'])
-                self._render_all_file_info(self.default_template, KEY_SIMPLE, packed=True, filter=filter_enabled)
+                self._render_all_file_info(self.default_template, KEY_SIMPLE, filter=filter_enabled)
             elif setup_type == SETUP_CUSTOM:
-                self._render_all_file_info(self.template, KEY_CUSTOM, packed=False, br_replace=True)
+                self._render_all_file_info(self.template, KEY_CUSTOM, br_replace=True)
             
             return flask.make_response("OK", 200)
         
