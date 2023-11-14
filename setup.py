@@ -33,7 +33,7 @@ plugin_url = "https://github.com/larsjuhw/OctoPrint-ExtraFileInfo"
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["SlicerSettingsParser>=3.2.1"]
+plugin_requires = ["OctoPrint-SlicerSettingsParser @ https://github.com/larsjuhw/OctoPrint-SlicerSettingsParser/archive/master.zip"]
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point
