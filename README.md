@@ -78,6 +78,7 @@ The default settings of SlicerSettingsParser support this format. To display the
 ![example1](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/b440b9c8-612d-4b59-95f7-fe751ebb5dbd)
 
 This gives the following result in the files menu:
+
 ![example2](https://github.com/larsjuhw/OctoPrint-ExtraFileInfo/assets/39745476/69d3c4a5-66fd-4afe-b440-5e685e5872a3)
 
 ## Known Issues

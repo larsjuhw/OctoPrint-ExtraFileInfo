@@ -12,7 +12,7 @@ $(function () {
         var setup = 'simple';
 
         self.rendering_info = ko.observable(false);
-        self.show_error_alert = ko.observable(false);//TODO
+        self.show_error_alert = ko.observable(false);
         self.rendering_done = ko.observable(false);
 
         self.filesViewModel = parameters[0];
@@ -93,9 +93,6 @@ $(function () {
             self.settingsViewModel.settings.plugins.extrafileinfo.config.remove(row);
         };
         
-        /**
-         * 
-         */
         self.onBeforeBinding = function() {
             // Show warning message if Cura Thumbnails is installed.
             if (self.settingsViewModel.settings.plugins.UltimakerFormatPackage === undefined) {
@@ -117,24 +114,52 @@ $(function () {
         });
 
         /**
-         * Initializes the ace editor in the settings panel.
-         * TODO: Only load the editor and its .js files when necessary.
+         * Attaches an observer that will initialize the ace editor when the settings panel is shown.
          */
         self.settingsViewModel.onStartupComplete = function() {
-            ace.config.set("basePath", "plugin/extrafileinfo/static/js/lib/ace");
-            efi_editor = ace.edit("extrafileinfo-editor");
-            efi_editor.session.setMode("ace/mode/django");
-            efi_editor.setOptions({
-                hScrollBarAlwaysVisible: false,
-                vScrollBarAlwaysVisible: false,
-                autoScrollEditorIntoView: true,
-                showPrintMargin: false,
+            function loadScript(url) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.append(script);
+                });
+            }
+            
+            function initializeEditor() {
+                console.log('[ExtraFileInfo] Initializing ace editor');
+                ace.config.set("basePath", "plugin/extrafileinfo/static/js/lib/ace");
+                efi_editor = ace.edit("extrafileinfo-editor");
+                efi_editor.session.setMode("ace/mode/django");
+                efi_editor.setOptions({
+                    hScrollBarAlwaysVisible: false,
+                    vScrollBarAlwaysVisible: false,
+                    autoScrollEditorIntoView: true,
+                    showPrintMargin: false,
+                });
+                efi_editor.renderer.setOptions({
+                    fontSize: '14px',
+                    fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Source Code Pro", "source-code-pro", monospace'
+                });
+                efi_editor.session.setValue(self.settingsViewModel.settings.plugins.extrafileinfo.custom_template());
+                console.log('[ExtraFileInfo] Ace editor initialized');
+            }
+
+            // Use Intersection Observer API to detect when the editor element is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        loadScript('plugin/extrafileinfo/static/js/lib/ace/ace.js')
+                        .then(() => loadScript('plugin/extrafileinfo/static/js/lib/ace/mode-django.js'))
+                        .then(() => initializeEditor())
+                        .catch((err) => console.error(`[ExtraFileInfo] Failed to load ace editor: ${err}`));
+                        observer.disconnect();
+                    }
+                });
             });
-            efi_editor.renderer.setOptions({
-                fontSize: '14px',
-                fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Source Code Pro", "source-code-pro", monospace'
-            });
-            efi_editor.session.setValue(self.settingsViewModel.settings.plugins.extrafileinfo.custom_template());
+            const editor = document.getElementById('extrafileinfo-editor');
+            observer.observe(editor);
         };
 
         self.settingsViewModel.onSettingsBeforeSave = function() {

@@ -16,8 +16,6 @@ SETUP_CUSTOM = 'Custom Jinja2 Template'
 KEY_SIMPLE = 'simple'
 KEY_CUSTOM = 'custom'
 
-#TODO: update readme and add new images to plugins.octoprint.org
-
 class ExtraFileInfoPlugin(
         octoprint.plugin.AssetPlugin,
         octoprint.plugin.EventHandlerPlugin,
@@ -93,7 +91,6 @@ class ExtraFileInfoPlugin(
         self._logger.debug(f'Loaded filter pattern: {self.filter_pattern}')
 
     def on_settings_save(self, data):
-        # TODO: add success message to front end
         return_value = super().on_settings_save(data)
 
         # Load template again if settings changed or setup type changed
