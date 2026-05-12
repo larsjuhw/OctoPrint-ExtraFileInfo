@@ -134,6 +134,9 @@ class ExtraFileInfoPlugin(
         return [
             dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=True)
         ]
+
+    def is_template_autoescaped(self):
+        return True
     
     def on_event(self, event: str, payload: dict):
         if event == 'plugin_SlicerSettingsParser_file_analyzed':
