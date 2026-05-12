@@ -57,6 +57,9 @@ class ExtraFileInfoPlugin(
             enable_defaultdict=False,
             custom_template=""
         )
+
+    def is_api_protected(self):
+        return True
     
     def get_api_commands(self):
         return {
