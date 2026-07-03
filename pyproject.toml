@@ -1,0 +1,44 @@
+[build-system]
+requires = [
+    "setuptools>=68",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "OctoPrint-ExtraFileInfo"
+version = "1.4.0"
+description = "Adds slicer settings to a file's additional data column and/or the active print info."
+authors = [
+    { name = "Lars Wolter", email = "larswolter@me.com" },
+]
+requires-python = ">=3,<4"
+dependencies = [
+    "OctoPrint-SlicerSettingsParser @ https://github.com/larsjuhw/OctoPrint-SlicerSettingsParser/archive/master.zip",
+]
+dynamic = [
+    "license",
+]
+
+[project.entry-points."octoprint.plugin"]
+extrafileinfo = "octoprint_extrafileinfo"
+
+[project.urls]
+Homepage = "https://github.com/larsjuhw/OctoPrint-ExtraFileInfo"
+
+[project.optional-dependencies]
+develop = [
+    "go-task-bin",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "octoprint_extrafileinfo",
+    "octoprint_extrafileinfo.*",
+]

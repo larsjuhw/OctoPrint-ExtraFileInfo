@@ -1,14 +1,13 @@
-# coding=utf-8
-from __future__ import absolute_import
-
 import os.path as ospath
 import re
 from collections import defaultdict
 
+import flask
 import octoprint.plugin
 from jinja2 import FileSystemLoader, TemplateSyntaxError
 from jinja2.environment import Template
 from jinja2.sandbox import SandboxedEnvironment, SecurityError
+from octoprint.access.permissions import Permissions
 from octoprint.filemanager.storage import LocalFileStorage
 
 SETUP_SIMPLE = 'Simple'
@@ -57,6 +56,9 @@ class ExtraFileInfoPlugin(
             enable_defaultdict=False,
             custom_template=""
         )
+
+    def is_api_protected(self):
+        return True
     
     def get_api_commands(self):
         return {
@@ -131,6 +133,9 @@ class ExtraFileInfoPlugin(
         return [
             dict(type="settings", template="extrafileinfo_settings.jinja2", custom_bindings=True)
         ]
+
+    def is_template_autoescaped(self):
+        return True
     
     def on_event(self, event: str, payload: dict):
         if event == 'plugin_SlicerSettingsParser_file_analyzed':
@@ -191,9 +196,7 @@ class ExtraFileInfoPlugin(
         recurse(files)
 
     def on_api_command(self, command, _):
-        import flask
-        from octoprint.server import user_permission
-        if not user_permission.can():
+        if not Permissions.SETTINGS.can():
             return flask.make_response("Insufficient rights", 401)
         
         if command == 'force_render':
